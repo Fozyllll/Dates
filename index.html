@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Année scolaire 2026-2027 - FWB</title>
+<style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
+    background: #f1f3f6;
+    color: #1a2333;
+    display:flex; justify-content:center;
+    padding: 24px 16px;
+    min-height:100vh;
+  }
+  .container { width:100%; max-width: 520px; display:flex; flex-direction:column; gap:16px; }
+  .card {
+    background:white; border-radius:24px; padding:28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .date { text-align:center; font-size:18px; margin-bottom:12px; }
+  .pct { text-align:center; font-size:72px; font-weight:800; color:#5b5bd6; line-height:1; margin:8px 0; }
+  .sub { text-align:center; font-size:18px; margin-bottom:24px; }
+  .bar-bg { background:#eef1f6; height:18px; border-radius:999px; overflow:hidden; }
+  .bar { background:#6c6cf5; height:100%; border-radius:999px; transition: width 0.5s; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .mini { background:white; border-radius:20px; padding:22px; text-align:center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .mini b { font-size:36px; display:block; }
+  .mini.green b { color:#0ca678; }
+  .mini span { font-size:15px; color:#555; }
+  .row { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .row strong { font-size:18px; text-transform:capitalize; }
+  .row .p { color:#5b5bd6; font-weight:700; font-size:18px; }
+  .small { color:#8a94a6; font-size:15px; margin-top:10px; }
+  .footer-card { text-align:center; font-size:17px; color:#4a5568; line-height:1.5; }
+  .footer-card b { color:#1a2333; }
+  @media(max-width:400px){ .pct{font-size:56px;} }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="date" id="date">Chargement...</div>
+    <div class="pct" id="pct">-- %</div>
+    <div class="sub">de l'année scolaire 2026-2027 est écoulée</div>
+    <div class="bar-bg"><div class="bar" id="barYear" style="width:0%"></div></div>
+  </div>
+
+  <div class="grid">
+    <div class="mini"><b id="dayNum">--</b><span>jour sur 313</span></div>
+    <div class="mini green"><b id="remain">--</b><span>jours restants</span></div>
+    <div class="mini"><b id="week">--</b><span>semaine d'école</span></div>
+    <div class="mini"><b>T1</b><span>trimestre</span></div>
+  </div>
+
+  <div class="card">
+    <div class="row"><strong id="monthTitle">Mois de ...</strong><span class="p" id="monthPct">-- %</span></div>
+    <div class="bar-bg"><div class="bar" id="barMonth" style="width:0%; opacity:0.7"></div></div>
+    <div class="small" id="monthDay">Jour -- sur --</div>
+  </div>
+
+  <div class="card footer-card">
+    Année scolaire FWB : du 24 août 2026<br>au 2 juillet 2027 <b>(313 jours)</b>
+  </div>
+</div>
+
+<script>
+  const start = new Date(2026, 7, 24, 0, 0, 0);
+  const end = new Date(2027, 6, 2, 23, 59, 59);
+
+  function update(){
+    const now = new Date();
+
+    const totalMs = end - start;
+    const elapsedMs = Math.min(Math.max(now - start, 0), totalMs);
+    const pct = elapsedMs / totalMs * 100;
+
+    const totalDays = 313;
+    let dayNum = Math.floor((now - start) / 86400000) + 1;
+    dayNum = Math.min(Math.max(dayNum, 0), totalDays);
+    const remain = totalDays - dayNum;
+    const week = Math.max(1, Math.ceil(dayNum / 7));
+
+    document.getElementById('date').textContent =
+      now.toLocaleDateString('fr-FR',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    document.getElementById('pct').textContent = pct.toFixed(2).replace('.', ',') + ' %';
+    document.getElementById('barYear').style.width = pct + '%';
+    document.getElementById('dayNum').textContent = dayNum;
+    document.getElementById('remain').textContent = remain;
+    document.getElementById('week').textContent = 'S' + week;
+
+    const m = now.getMonth(), y = now.getFullYear();
+    const dim = new Date(y, m + 1, 0).getDate();
+    const d = now.getDate();
+    const mpct = d / dim * 100;
+
+    document.getElementById('monthTitle').textContent =
+      'Mois de ' + now.toLocaleDateString('fr-FR',{month:'long'});
+    document.getElementById('monthPct').textContent = mpct.toFixed(1).replace('.', ',') + ' %';
+    document.getElementById('barMonth').style.width = mpct + '%';
+    document.getElementById('monthDay').textContent = `Jour ${d} sur ${dim}`;
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+</body>
+</html>
