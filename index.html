@@ -46,9 +46,9 @@ h3{font-size:16px;margin-bottom:8px}
 <div class="next card" id="nextFete">...</div>
 <div class="card hero"><div class="d" id="date">...</div><div class="p" id="pct">...</div><div class="small">de l'année écoulée</div><div class="bar"><i id="barYear"></i></div><div class="rowbtns"><button class="primary" id="shareBtn">Partager</button><button class="ghost" id="copyBtn">Copier</button><button class="ghost" id="notifBtn">🔔</button></div></div>
 <div class="grid"><div class="tile"><b id="dayNum">--</b><span id="dayTxt"></span></div><div class="tile"><b id="remain" style="color:#0ca678">--</b><span>restants</span></div></div>
-<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div><div class="small" id="monthLine"></div><div class="bar"><i id="barMonth" style="opacity:.6"></i></div></div>
+<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div><div class="small" id="monthLine"></div><div class="bar"><i id="barMonth" style="opacity:.6"></i></div><div class="small" id="weekLine"></div><div class="bar"><i id="barWeek" style="opacity:.4"></i></div></div>
 <div class="card"><h3>🎉 Fêtes · <span id="regionName"></span></h3><select id="feteSelect"></select><div id="feteDetail" class="detail"><div id="fdName" style="font-weight:800"></div><div class="small" id="fdDate"></div><div id="fdCount" style="font-size:24px;font-weight:800;color:var(--acc);margin:8px 0"></div><div class="bar"><i id="fdBar"></i></div></div><details style="margin-top:12px"><summary>Mes événements (<span id="myCount">0</span>)</summary><div id="myList"></div><div style="display:flex;gap:8px"><input id="evName" placeholder="Nom" maxlength="40"><input id="evDate" type="date"></div><button class="primary" id="addEv">Ajouter</button></details></div>
-<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027 (313 j)</option><option value="france">France – 1 sept 2026 → 3 juil 2027 (306 j)</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 3 juil 2027</option></select></div>
+<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="france">France – 1 sept 2026 → 3 juil 2027</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 3 juil 2027</option></select><div class="small">Le changement est sauvegardé automatiquement.</div></div>
 <div class="small" style="text-align:center" id="footer"></div>
 </div>
 <script>
@@ -61,22 +61,23 @@ const SYSTEMS={
  suisse:{s:new Date(2026,7,17),e:new Date(2027,6,3),r:"Suisse"}
 };
 const FETES={
- fwb:[["Rentrée","2026-08-24"],["Toussaint","2026-11-01"],["Noël","2026-12-25"],["Pâques","2027-04-05"],["Fin","2027-07-02"]],
- france:[["Rentrée","2026-09-01"],["Toussaint","2026-11-01"],["Noël","2026-12-25"],["Pâques","2027-04-05"],["14 Juillet","2027-07-14"]],
- flandre:[["Rentrée","2026-09-01"],["Noël","2026-12-25"]],
- quebec:[["Rentrée","2026-08-27"],["Noël","2026-12-25"]],
- suisse:[["Rentrée","2026-08-17"],["Noël","2026-12-25"]]
+ fwb:[["Rentrée FWB","2026-08-24"],["Fête de la FWB","2026-09-27"],["Halloween","2026-10-31"],["Toussaint","2026-11-01"],["Armistice","2026-11-11"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Épiphanie","2027-01-06"],["Chandeleur","2027-02-02"],["Saint-Valentin","2027-02-14"],["Carnaval","2027-02-16"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Fête des Mères","2027-05-30"],["Fête des Pères","2027-06-13"],["Fin d'année","2027-07-02"]],
+ france:[["Rentrée","2026-09-01"],["Toussaint","2026-11-01"],["Armistice","2026-11-11"],["Noël","2026-12-25"],["Jour de l'An","2027-01-01"],["Épiphanie","2027-01-06"],["Chandeleur","2027-02-02"],["Saint-Valentin","2027-02-14"],["Mardi Gras","2027-02-16"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["8 Mai","2027-05-08"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Lundi de Pentecôte","2027-05-24"],["Fête des Mères","2027-05-30"],["Fête de la Musique","2027-06-21"],["14 Juillet","2027-07-14"],["Assomption","2027-08-15"]],
+ flandre:[["Rentrée","2026-09-01"],["Halloween","2026-10-31"],["Allerheiligen","2026-11-01"],["Wapenstilstand","2026-11-11"],["Sinterklaas","2026-12-06"],["Kerstmis","2026-12-25"],["Nieuwjaar","2027-01-01"],["Driekoningen","2027-01-06"],["Valentijn","2027-02-14"],["Pasen","2027-04-05"],["Paasmaandag","2027-04-06"],["1 Mei","2027-05-01"],["O.H. Hemelvaart","2027-05-13"],["Pinksteren","2027-05-23"],["Pinkstermaandag","2027-05-24"],["Vaderdag","2027-06-13"],["Vlaamse Feestdag","2027-07-11"],["Nationale Feestdag","2027-07-21"]],
+ quebec:[["Rentrée","2026-08-27"],["Fête du Travail","2026-09-07"],["Action de grâce","2026-10-12"],["Halloween","2026-10-31"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Saint-Valentin","2027-02-14"],["Relâche","2027-03-01"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["Journée des patriotes","2027-05-24"],["Fête des Mères","2027-05-09"],["Fête des Pères","2027-06-20"],["Saint-Jean-Baptiste","2027-06-24"],["Fête du Canada","2027-07-01"]],
+ suisse:[["Rentrée","2026-08-17"],["Jeûne fédéral","2026-09-21"],["Halloween","2026-10-31"],["Toussaint","2026-11-01"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Épiphanie","2027-01-06"],["Saint-Valentin","2027-02-14"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Lundi de Pentecôte","2027-05-24"],["Fête-Dieu","2027-06-03"],["Fête nationale","2027-08-01"]]
 };
 const VAC={
- fwb:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"]],
- france:[["Toussaint","2026-10-17","2026-11-02"],["Noël","2026-12-19","2027-01-04"]],
- flandre:[],quebec:[],suisse:[]
+ fwb:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"],["Détente","2027-02-15","2027-02-21"],["Printemps","2027-04-03","2027-04-18"]],
+ france:[["Toussaint","2026-10-17","2026-11-02"],["Noël","2026-12-19","2027-01-04"],["Hiver","2027-02-13","2027-03-01"],["Printemps","2027-04-10","2027-04-26"]],
+ flandre:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"],["Printemps","2027-04-05","2027-04-18"]],
+ quebec:[["Fêtes","2026-12-21","2027-01-04"],["Relâche","2027-03-01","2027-03-07"]],
+ suisse:[["Automne","2026-10-17","2026-11-01"],["Hiver","2026-12-24","2027-01-10"]]
 };
-let cur='fwb';
-try{cur=localStorage.getItem('sys')||'fwb'}catch(e){}
+let cur='fwb'; try{cur=localStorage.getItem('sys')||'fwb'}catch(e){}
 let myEv=[]; try{myEv=JSON.parse(localStorage.getItem('ev')||'[]')}catch(e){myEv=[]}
 const DAY=864e5;
-function pD(s){return new Date(s+"T00:00:00")}
+const pD=s=>new Date(s+"T00:00:00");
 function update(){
  const S=SYSTEMS[cur]; const now=new Date();
  const total=Math.round((S.e-S.s)/DAY)+1;
@@ -87,37 +88,35 @@ function update(){
  $('barYear').style.width=pct+'%';
  $('dayNum').textContent=done; $('dayTxt').textContent='/ '+total+' jours';
  $('remain').textContent=total-done;
- // vacances
  let inV=false; const vb=$('vac');
  for(const[n,ds,de]of (VAC[cur]||[])){ if(now>=pD(ds)&&now<=pD(de)){ const r=Math.ceil((pD(de)-now)/DAY); vb.textContent='🏖️ Vacances ('+n+') – reprise dans '+r+' j'; vb.classList.add('show'); inV=true; break; } }
  if(!inV) vb.classList.remove('show');
- // stats
  const left=total-done;
- $('stats').textContent=Math.round(left*5/7)+' jours d\'école restants · Semaine '+Math.max(1,Math.ceil(done/7));
+ $('stats').textContent=Math.round(left*5/7)+' jours d\'école restants · Semaine '+Math.max(1,Math.ceil(done/7))+' · '+left+' j calendaires';
  const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
- $('monthLine').textContent=now.toLocaleDateString('fr-FR',{month:'long'})+' : '+now.getDate()+'/'+dim;
+ $('monthLine').textContent='Mois : '+now.getDate()+'/'+dim+' '+now.toLocaleDateString('fr-FR',{month:'long'});
  $('barMonth').style.width=(now.getDate()/dim*100)+'%';
- $('footer').textContent=S.r+' · '+total+' jours au total';
+ const wd=(now.getDay()+6)%7; $('weekLine').textContent='Semaine : '+(wd+1)+'/7 jours';
+ $('barWeek').style.width=((wd+1)/7*100)+'%';
+ $('footer').textContent=S.r+' · '+total+' jours · '+S.s.toLocaleDateString('fr-FR')+' → '+S.e.toLocaleDateString('fr-FR');
  $('regionName').textContent=S.r;
- // prochaine fête
  const all=[...(FETES[cur]||[]).map(f=>({name:f[0],date:f[1]})),...myEv].map(f=>({...f,d:pD(f.date)})).filter(f=>f.d>=now).sort((a,b)=>a.d-b.d);
- if(all.length){ const n=all[0]; const diff=Math.ceil((n.d-now)/DAY); $('nextFete').innerHTML='⏳ Prochaine : <b>'+n.name+'</b> dans '+diff+' j'; }
- // select fêtes
- const sel=$('feteSelect'); sel.innerHTML='<option value="">-- Sélectionne --</option>';
- (FETES[cur]||[]).forEach((f,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=f[0]; sel.appendChild(o); });
+ if(all.length){ const n=all[0]; const diff=Math.ceil((n.d-now)/DAY); $('nextFete').innerHTML='⏳ Prochaine : <b>'+n.name+'</b> dans '+diff+' j ('+n.d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+')'; }
+ const sel=$('feteSelect'); sel.innerHTML='<option value="">-- Sélectionne une fête ('+(FETES[cur].length)+' ) --</option>';
+ (FETES[cur]||[]).forEach((f,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=f[0]+' – '+pD(f[1]).toLocaleDateString('fr-FR',{day:'numeric',month:'short'}); sel.appendChild(o); });
  myEv.forEach((e,i)=>{ const o=document.createElement('option'); o.value='my'+i; o.textContent='⭐ '+e.name; sel.appendChild(o); });
  renderMy();
 }
-function renderMy(){ const div=$('myList'); div.innerHTML=''; $('myCount').textContent=myEv.length; myEv.forEach((ev,i)=>{ const row=document.createElement('div'); row.className='ev'; row.innerHTML='<span>'+ev.name+'</span>'; const b=document.createElement('button'); b.className='ghost'; b.textContent='×'; b.onclick=()=>{myEv.splice(i,1); try{localStorage.setItem('ev',JSON.stringify(myEv))}catch(e){}; update()}; row.appendChild(b); div.appendChild(row); }); }
+function renderMy(){ const div=$('myList'); div.innerHTML=''; $('myCount').textContent=myEv.length; myEv.forEach((ev,i)=>{ const row=document.createElement('div'); row.className='ev'; const d=pD(ev.date); const diff=Math.ceil((d-new Date())/864e5); row.innerHTML='<span>⭐ '+ev.name+' <small style="color:var(--mut)">'+(diff>=0?'J-'+diff:'passé')+'</small></span>'; const b=document.createElement('button'); b.className='ghost'; b.textContent='×'; b.onclick=()=>{myEv.splice(i,1); try{localStorage.setItem('ev',JSON.stringify(myEv))}catch(e){}; update()}; row.appendChild(b); div.appendChild(row); }); }
 $('system').value=cur;
-$('system').onchange=e=>{ cur=e.target.value; try{localStorage.setItem('sys',cur)}catch(e){}; update(); };
-$('feteSelect').onchange=e=>{ const v=e.target.value; const box=$('feteDetail'); if(v===''){box.classList.remove('show');return} const f=String(v).startsWith('my')?myEv[+String(v).slice(2)]:{name:FETES[cur][+v][0],date:FETES[cur][+v][1]}; const d=pD(f.date); const diff=Math.ceil((d-new Date())/DAY); $('fdName').textContent='🎉 '+f.name; $('fdDate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}); $('fdCount').textContent=diff>0?'dans '+diff+' jours':diff===0?"Aujourd'hui!":"passé"; const S=SYSTEMS[cur]; $('fdBar').style.width=(Math.min(Math.max((d-S.s)/(S.e-S.s),0),1)*100)+'%'; box.classList.add('show'); };
-$('addEv').onclick=()=>{ const n=$('evName').value.trim(); const d=$('evDate').value; if(!n||!d)return; myEv.push({name:n,date:d}); try{localStorage.setItem('ev',JSON.stringify(myEv))}catch(e){}; $('evName').value=''; update(); };
+$('system').onchange=e=>{ cur=e.target.value; try{localStorage.setItem('sys',cur)}catch(e){}; $('feteDetail').classList.remove('show'); update(); };
+$('feteSelect').onchange=e=>{ const v=e.target.value; const box=$('feteDetail'); if(v===''){box.classList.remove('show');return} const f=String(v).startsWith('my')?myEv[+String(v).slice(2)]:{name:FETES[cur][+v][0],date:FETES[cur][+v][1]}; const d=pD(f.date); const diff=Math.ceil((d-new Date())/864e5); $('fdName').textContent='🎉 '+f.name; $('fdDate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); $('fdCount').textContent=diff>0?'dans '+diff+' jours':diff===0?"C'est aujourd'hui! 🎊":"déjà passé"; const S=SYSTEMS[cur]; $('fdBar').style.width=(Math.min(Math.max((d-S.s)/(S.e-S.s),0),1)*100)+'%'; box.classList.add('show'); };
+$('addEv').onclick=()=>{ const n=$('evName').value.trim(); const d=$('evDate').value; if(!n||!d)return alert('Nom + date requis'); myEv.push({name:n,date:d}); try{localStorage.setItem('ev',JSON.stringify(myEv))}catch(e){}; $('evName').value=''; $('evDate').value=''; update(); };
 $('themeBtn').onclick=()=>{ document.body.classList.toggle('dark'); try{localStorage.setItem('th',document.body.classList.contains('dark')?'1':'0')}catch(e){} };
 try{ if(localStorage.getItem('th')==='1') document.body.classList.add('dark') }catch(e){}
-$('shareBtn').onclick=()=>{ const t="J'en suis à "+$('pct').textContent+" de mon année scolaire 📚 https://fozyllll.github.io/Dates/"; window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank') };
-$('copyBtn').onclick=()=>{ try{navigator.clipboard.writeText($('pct').textContent)}catch(e){} };
-$('notifBtn').onclick=async()=>{ if(!('Notification' in window))return; await Notification.requestPermission(); };
+$('shareBtn').onclick=()=>{ const t="J'en suis à "+$('pct').textContent+" de mon année scolaire ("+$('regionName').textContent+") 📚 "+location.href; if(navigator.share){navigator.share({title:"Année scolaire",text:t}).catch(()=>{})} else window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank') };
+$('copyBtn').onclick=async()=>{ try{await navigator.clipboard.writeText("J'en suis à "+$('pct').textContent+" de mon année scolaire 📚"); $('copyBtn').textContent='Copié!'; setTimeout(()=>$('copyBtn').textContent='Copier',1500)}catch(e){} };
+$('notifBtn').onclick=async()=>{ if(!('Notification' in window)) return alert('Notifications non supportées'); const p=await Notification.requestPermission(); if(p==='granted') new Notification('🔔 Année scolaire',{body:"Tu es à "+$('pct').textContent}); };
 update(); setInterval(update,60000);
 </script>
 </body>
