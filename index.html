@@ -3,248 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Année scolaire - Progress</title>
+<title>Année scolaire</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5b5bd6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,sans-serif;background:#f1f3f6;color:#1a2333;display:flex;justify-content:center;padding:24px 16px;min-height:100vh}
-.container{width:100%;max-width:560px;display:flex;flex-direction:column;gap:16px}
-.card{background:white;border-radius:24px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.date{text-align:center;font-size:18px;margin-bottom:8px;text-transform:capitalize}
-.pct{text-align:center;font-size:68px;font-weight:800;color:#5b5bd6;line-height:1;margin:8px 0}
-.sub{text-align:center;font-size:17px;margin-bottom:20px}
-.bar-bg{background:#eef1f6;height:16px;border-radius:999px;overflow:hidden}
-.bar{background:#6c6cf5;height:100%;border-radius:999px;transition:width .4s}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.mini{background:white;border-radius:20px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.mini b{font-size:34px;display:block}.mini.green b{color:#0ca678}.mini span{font-size:14px;color:#555}
-.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.row strong{font-size:17px;text-transform:capitalize}.row .p{color:#5b5bd6;font-weight:700}
-.small{color:#8a94a6;font-size:14px;margin-top:8px}
-h3{font-size:18px;margin-bottom:12px}label{font-size:14px;color:#555;display:block;margin:10px 0 4px}
-select,input[type=date],input[type=text]{width:100%;padding:12px;border:1px solid #dde2ea;border-radius:12px;font-size:15px;background:white}
-button{background:#5b5bd6;color:white;border:none;padding:10px 16px;border-radius:12px;font-size:15px;cursor:pointer;margin-top:10px}
-button.ghost{background:#eef1f6;color:#333}
-.fete-detail{background:#f8f9ff;border:1px solid #e8eaff;border-radius:16px;padding:16px;margin-top:12px;display:none}
-.fete-detail.show{display:block}.fete-detail .big{font-size:22px;font-weight:800}.fete-detail .count{font-size:32px;font-weight:800;color:#5b5bd6;margin:8px 0}
-.event{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
-.del{background:#ffe3e3;color:#c92a2a;padding:4px 8px;border-radius:8px;margin:0}.flex{display:flex;gap:8px}
+:root{--bg:#f6f7f9;--card:#fff;--txt:#161d2b;--mut:#7b8499;--acc:#5b5bd6;--line:#eef0f4}
+body.dark{--bg:#0f1220;--card:#181d33;--txt:#eef1f6;--mut:#9aa3b8;--line:#242b4a}
+body{font-family:system-ui,-apple-system,Inter,sans-serif;background:var(--bg);color:var(--txt);display:flex;justify-content:center;padding:20px 14px;min-height:100vh}
+.wrap{width:100%;max-width:520px;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.icon-btn{background:var(--line);border:0;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--txt)}
+.hero{text-align:center}
+.hero.d{color:var(--mut);text-transform:capitalize;font-size:15px}
+.hero.p{font-size:64px;font-weight:800;color:var(--acc);margin:6px 0;line-height:1}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
+.bar>i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width.3s}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+.tile b{font-size:28px;display:block}.tile span{font-size:13px;color:var(--mut)}
+.banner{display:none;border-radius:16px;padding:14px;text-align:center;font-weight:600;background:#fff4e5;color:#e67700;border:1px solid #ffe8cc}
+.banner.show{display:block}
+.next{text-align:center;font-size:14px;color:var(--mut)}
+.next b{color:var(--txt)}
+select,input{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--txt);font-size:15px}
+button.primary{background:var(--acc);color:#fff;border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px}
+button.ghost{background:var(--line);color:var(--txt);border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px}
+.rowbtns{display:flex;gap:8px;margin-top:12px}
+.rowbtns button{flex:1;margin:0}
+.small{font-size:13px;color:var(--mut);margin-top:8px}
+.detail{margin-top:12px;padding:14px;border-radius:14px;background:var(--bg);border:1px solid var(--line);display:none}
+.detail.show{display:block}
+.ev{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+summary{cursor:pointer;color:var(--acc);font-weight:600;font-size:14px}
+h3{font-size:16px;margin-bottom:8px}
+label{font-size:13px;color:var(--mut);margin:10px 0 4px;display:block}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="card"><div class="date" id="date">...</div><div class="pct" id="pct">-- %</div><div class="sub" id="subTitle">de l'année scolaire est écoulée</div><div class="bar-bg"><div class="bar" id="barYear"></div></div></div>
-<div class="grid"><div class="mini"><b id="dayNum">--</b><span id="dayTxt">jour sur --</span></div><div class="mini green"><b id="remain">--</b><span>jours restants</span></div><div class="mini"><b id="week">--</b><span>semaine d'école</span></div><div class="mini"><b id="trim">--</b><span>trimestre auto</span></div></div>
-<div class="card"><div class="row"><strong id="monthTitle">Mois</strong><span class="p" id="monthPct">-- %</span></div><div class="bar-bg"><div class="bar" id="barMonth" style="opacity:.7"></div></div><div class="small" id="monthDay">--</div></div>
-
-<div class="card">
-<h3>🎉 Fêtes & événements - <span id="regionName" style="color:#5b5bd6"></span></h3>
-<label>Choisir une fête</label>
-<select id="feteSelect" onchange="showFete(this.value)"><option value="">-- Sélectionne --</option></select>
-<div id="feteDetail" class="fete-detail"><div class="big" id="fdName"></div><div class="small" id="fdDate"></div><div class="count" id="fdCount"></div><div class="bar-bg"><div class="bar" id="fdBar"></div></div><div class="small" id="fdInfo"></div></div>
-<details style="margin-top:16px"><summary style="cursor:pointer;color:#5b5bd6;font-weight:600">+ Mes événements perso (<span id="myCount">0</span>)</summary><div id="myList" style="margin-top:8px"></div><div class="flex" style="margin-top:10px"><input type="text" id="evName" placeholder="Nom"><input type="date" id="evDate"></div><button onclick="addEvent()">Ajouter</button></details>
+<div class="wrap">
+<div class="top"><span>📚 Année scolaire</span><button class="icon-btn" id="themeBtn" aria-label="Thème">🌙</button></div>
+<div id="vac" class="banner"></div>
+<div class="next card" id="nextFete"></div>
+<div class="card hero"><div class="d" id="date"></div><div class="p" id="pct">--</div><div class="small">de l'année écoulée</div><div class="bar"><i id="barYear"></i></div><div class="rowbtns"><button class="primary" id="shareBtn">Partager</button><button class="ghost" id="copyBtn">Copier</button><button class="ghost" id="notifBtn">🔔</button></div></div>
+<div class="grid"><div class="tile"><b id="dayNum">--</b><span id="dayTxt"></span></div><div class="tile"><b id="remain" style="color:#0ca678">--</b><span>restants</span></div></div>
+<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div><div class="small" id="monthLine" style="margin-top:6px"></div><div class="bar"><i id="barMonth" style="opacity:.6"></i></div></div>
+<div class="card"><h3>🎉 Fêtes · <span id="regionName"></span></h3><label>Choisir</label><select id="feteSelect"></select><div id="feteDetail" class="detail"><div id="fdName" style="font-weight:800"></div><div class="small" id="fdDate"></div><div id="fdCount" style="font-size:24px;font-weight:800;color:var(--acc);margin:8px 0"></div><div class="bar"><i id="fdBar"></i></div></div><details style="margin-top:12px"><summary>Mes événements (<span id="myCount">0</span>)</summary><div id="myList"></div><div style="display:flex;gap:8px;margin-top:8px"><input id="evName" placeholder="Nom" maxlength="40"><input id="evDate" type="date"></div><button class="primary" id="addEv" style="margin-top:8px">Ajouter</button></details></div>
+<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="france">France – 1 sept 2026 → 4 juil 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 2 juil 2027</option><option value="custom">Personnalisé…</option></select><div id="customDates" style="display:none"><div style="display:flex;gap:8px"><div style="flex:1"><label>Début</label><input type="date" id="cStart"></div><div style="flex:1"><label>Fin</label><input type="date" id="cEnd"></div></div><button class="primary" id="saveCustom">Enregistrer</button></div></div>
+<div class="small" style="text-align:center" id="footer"></div>
 </div>
-
-<div class="card">
-<h3>⚙️ Système d'éducation</h3>
-<label>Choisis ta région</label>
-<select id="system" onchange="changeSystem(this.value)">
-<option value="fwb">Belgique - FWB (24 août 2026 → 2 juil 2027)</option>
-<option value="flandre">Belgique - Flandre (1 sept 2026 → 30 juin 2027)</option>
-<option value="france">France (1 sept 2026 → 4 juil 2027)</option>
-<option value="quebec">Québec (27 août 2026 → 23 juin 2027)</option>
-<option value="suisse">Suisse Romande (17 août 2026 → 2 juil 2027)</option>
-<option value="custom">Personnalisé...</option>
-</select>
-<div id="customDates" style="display:none"><div class="flex"><div style="flex:1"><label>Début</label><input type="date" id="cStart"></div><div style="flex:1"><label>Fin</label><input type="date" id="cEnd"></div></div><button onclick="saveCustom()">Enregistrer</button></div>
-<div style="margin-top:8px"><button class="ghost" onclick="localStorage.clear();location.reload()">Réinitialiser tout</button></div>
-</div>
-<div class="card" style="text-align:center;color:#6b7280;font-size:14px" id="footerInfo"></div>
-</div>
-
 <script>
-const SYSTEMS = {
-fwb:{name:"2026-2027",start:"2026-08-24",end:"2027-07-02",label:"FWB : 24 août 2026 → 2 juillet 2027",region:"FWB"},
-flandre:{name:"2026-2027",start:"2026-09-01",end:"2027-06-30",label:"Flandre : 1 sept 2026 → 30 juin 2027",region:"Flandre"},
-france:{name:"2026-2027",start:"2026-09-01",end:"2027-07-04",label:"France : 1 sept 2026 → 4 juil 2027",region:"France"},
-quebec:{name:"2026-2027",start:"2026-08-27",end:"2027-06-23",label:"Québec : 27 août 2026 → 23 juin 2027",region:"Québec"},
-suisse:{name:"2026-2027",start:"2026-08-17",end:"2027-07-02",label:"Suisse : 17 août 2026 → 2 juil 2027",region:"Suisse"},
-};
-
-const FETES_BY_SYSTEM = {
-fwb:[
-{name:"Rentrée FWB",date:"2026-08-24"},
-{name:"Fête de la Fédération Wallonie-Bruxelles",date:"2026-09-27"},
-{name:"Congé d'automne",date:"2026-10-26"},
-{name:"Toussaint",date:"2026-11-01"},
-{name:"Armistice",date:"2026-11-11"},
-{name:"Saint-Nicolas",date:"2026-12-06"},
-{name:"Vacances d'hiver",date:"2026-12-21"},
-{name:"Noël",date:"2026-12-25"},
-{name:"Nouvel An",date:"2027-01-01"},
-{name:"Congé de détente (Carnaval)",date:"2027-02-15"},
-{name:"Vacances de printemps",date:"2027-04-03"},
-{name:"Pâques",date:"2027-04-05"},
-{name:"Lundi de Pâques",date:"2027-04-06"},
-{name:"Fête du Travail",date:"2027-05-01"},
-{name:"Ascension",date:"2027-05-06"},
-{name:"Pentecôte",date:"2027-05-17"},
-{name:"Fin d'année FWB",date:"2027-07-02"},
-{name:"Fête nationale belge",date:"2027-07-21"},
-],
-flandre:[
-{name:"Rentrée Flandre",date:"2026-09-01"},
-{name:"Herfstvakantie",date:"2026-11-02"},
-{name:"Wapenstilstand",date:"2026-11-11"},
-{name:"Sinterklaas",date:"2026-12-06"},
-{name:"Kerstvakantie",date:"2026-12-21"},
-{name:"Kerstmis",date:"2026-12-25"},
-{name:"Nieuwjaar",date:"2027-01-01"},
-{name:"Krokusvakantie",date:"2027-02-15"},
-{name:"Paasvakantie",date:"2027-04-05"},
-{name:"Pasen",date:"2027-04-05"},
-{name:"Dag van de Arbeid",date:"2027-05-01"},
-{name:"Hemelvaart",date:"2027-05-06"},
-{name:"Pinksteren",date:"2027-05-17"},
-{name:"Einde schooljaar",date:"2027-06-30"},
-{name:"Nationale feestdag",date:"2027-07-21"},
-],
-france:[
-{name:"Rentrée France",date:"2026-09-01"},
-{name:"Vacances de la Toussaint",date:"2026-10-17"},
-{name:"Toussaint",date:"2026-11-01"},
-{name:"Armistice",date:"2026-11-11"},
-{name:"Vacances de Noël",date:"2026-12-19"},
-{name:"Noël",date:"2026-12-25"},
-{name:"Nouvel An",date:"2027-01-01"},
-{name:"Vacances d'hiver",date:"2027-02-06"},
-{name:"Saint-Valentin",date:"2027-02-14"},
-{name:"Vacances de printemps",date:"2027-04-10"},
-{name:"Pâques",date:"2027-04-05"},
-{name:"Fête du Travail",date:"2027-05-01"},
-{name:"Victoire 1945",date:"2027-05-08"},
-{name:"Ascension",date:"2027-05-06"},
-{name:"Pentecôte",date:"2027-05-17"},
-{name:"Fête de la Musique",date:"2027-06-21"},
-{name:"Fin d'année France",date:"2027-07-04"},
-{name:"Fête nationale française",date:"2027-07-14"},
-],
-quebec:[
-{name:"Rentrée Québec",date:"2026-08-27"},
-{name:"Fête du Travail",date:"2026-09-07"},
-{name:"Halloween",date:"2026-10-31"},
-{name:"Action de grâce",date:"2026-10-12"},
-{name:"Noël",date:"2026-12-25"},
-{name:"Vacances des Fêtes",date:"2026-12-21"},
-{name:"Jour de l'An",date:"2027-01-01"},
-{name:"Saint-Valentin",date:"2027-02-14"},
-{name:"Semaine de relâche",date:"2027-03-01"},
-{name:"Pâques",date:"2027-04-05"},
-{name:"Journée nationale des patriotes",date:"2027-05-24"},
-{name:"Fête nationale du Québec",date:"2027-06-24"},
-{name:"Fin d'année Québec",date:"2027-06-23"},
-{name:"Fête du Canada",date:"2027-07-01"},
-],
-suisse:[
-{name:"Rentrée Suisse",date:"2026-08-17"},
-{name:"Jeûne fédéral",date:"2026-09-21"},
-{name:"Vacances d'automne",date:"2026-10-12"},
-{name:"Saint-Nicolas",date:"2026-12-06"},
-{name:"Vacances de Noël",date:"2026-12-21"},
-{name:"Noël",date:"2026-12-25"},
-{name:"Nouvel An",date:"2027-01-01"},
-{name:"Vacances de février",date:"2027-02-15"},
-{name:"Vacances de Pâques",date:"2027-04-02"},
-{name:"Pâques",date:"2027-04-05"},
-{name:"Fête du Travail",date:"2027-05-01"},
-{name:"Ascension",date:"2027-05-06"},
-{name:"Pentecôte",date:"2027-05-17"},
-{name:"Fête nationale suisse",date:"2027-08-01"},
-{name:"Fin d'année Suisse",date:"2027-07-02"},
-],
-custom:[
-{name:"Rentrée",date:"2026-09-01"},
-{name:"Halloween",date:"2026-10-31"},
-{name:"Noël",date:"2026-12-25"},
-{name:"Nouvel An",date:"2027-01-01"},
-{name:"Pâques",date:"2027-04-05"},
-{name:"Fête du Travail",date:"2027-05-01"},
-]
-};
-
-let cfg = JSON.parse(localStorage.getItem('scol_cfg')||'null') || {sys:'fwb'};
-let myEvents = JSON.parse(localStorage.getItem('scol_events')||'[]');
-
-function currentFetes(){ return FETES_BY_SYSTEM[cfg.sys] || FETES_BY_SYSTEM.custom; }
-
-function buildFeteDropdown(){
-  const sel=document.getElementById('feteSelect');
-  sel.innerHTML='<option value="">-- Sélectionne --</option>';
-  currentFetes().forEach((f,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=f.name; sel.appendChild(o); });
-  myEvents.forEach((e,i)=>{ const o=document.createElement('option'); o.value='my'+i; o.textContent='⭐ '+e.name; sel.appendChild(o); });
-  document.getElementById('regionName').textContent = SYSTEMS[cfg.sys]?.region || 'Perso';
-  document.getElementById('feteDetail').classList.remove('show');
-}
-
-function showFete(v){
-  if(v===""){document.getElementById('feteDetail').classList.remove('show');return;}
-  let f = String(v).startsWith('my') ? myEvents[parseInt(String(v).slice(2))] : currentFetes()[parseInt(v)];
-  if(!f) return;
-  const now=new Date(); const d=new Date(f.date+"T00:00:00");
-  const diff=Math.ceil((d-now)/86400000);
-  document.getElementById('fdName').textContent="🎉 "+f.name;
-  document.getElementById('fdDate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('fdCount').textContent=diff>0?`dans ${diff} jours`:diff===0?"C'est aujourd'hui ! 🎉":`il y a ${-diff} jours`;
-  const {start,end}=getDates();
-  const p=Math.min(Math.max((d-start)/(end-start),0),1)*100;
-  document.getElementById('fdBar').style.width=p+'%';
-  document.getElementById('fdInfo').textContent=`Se situe à ${p.toFixed(1).replace('.',',')} % de l'année scolaire`;
-  document.getElementById('feteDetail').classList.add('show');
-}
-
-function getDates(){
-  if(cfg.sys==='custom') return {start:new Date((cfg.cStart||"2026-09-01")+"T00:00:00"),end:new Date((cfg.cEnd||"2027-06-30")+"T23:59:59"),label:`Perso : ${cfg.cStart||''} → ${cfg.cEnd||''}`};
-  const s=SYSTEMS[cfg.sys]; return {start:new Date(s.start+"T00:00:00"),end:new Date(s.end+"T23:59:59"),label:s.label};
-}
-function update(){
-  const {start,end,label}=getDates(); const now=new Date();
-  const pct=Math.min(Math.max((now-start)/(end-start),0),1)*100;
-  const totalDays=Math.round((end-start)/86400000)+1;
-  let dayNum=Math.floor((now-start)/86400000)+1; dayNum=Math.min(Math.max(dayNum,0),totalDays);
-  document.getElementById('date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('pct').textContent=pct.toFixed(2).replace('.',',')+' %';
-  document.getElementById('barYear').style.width=pct+'%';
-  document.getElementById('dayNum').textContent=dayNum;
-  document.getElementById('dayTxt').textContent=`jour sur ${totalDays}`;
-  document.getElementById('remain').textContent=totalDays-dayNum;
-  document.getElementById('week').textContent='S'+Math.max(1,Math.ceil(dayNum/7));
-  const m=now.getMonth(); document.getElementById('trim').textContent=(m>=8&&m<=10)?"T1":(m==11||m<=2)?"T2":"T3";
-  const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-  document.getElementById('monthTitle').textContent='Mois de '+now.toLocaleDateString('fr-FR',{month:'long'});
-  document.getElementById('monthPct').textContent=(now.getDate()/dim*100).toFixed(1).replace('.',',')+' %';
-  document.getElementById('barMonth').style.width=(now.getDate()/dim*100)+'%';
-  document.getElementById('monthDay').textContent=`Jour ${now.getDate()} sur ${dim}`;
-  document.getElementById('footerInfo').innerHTML=label+` <b>(${totalDays} jours)</b>`;
-  renderMy();
-}
-function renderMy(){
-  const div=document.getElementById('myList'); div.innerHTML='';
-  document.getElementById('myCount').textContent=myEvents.length;
-  myEvents.forEach((e,i)=>{
-    const d=new Date(e.date+"T00:00:00"); const diff=Math.ceil((d-new Date())/86400000);
-    const el=document.createElement('div'); el.className='event';
-    el.innerHTML=`<span><b>${e.name}</b> - ${d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})} (${diff>0?diff+'j':diff===0?'auj.':diff+'j'})</span><button class="del" onclick="delEvent(${i})">×</button>`;
-    div.appendChild(el);
-  });
-  localStorage.setItem('scol_events',JSON.stringify(myEvents));
-}
-function addEvent(){const n=document.getElementById('evName').value.trim(),d=document.getElementById('evDate').value; if(!n||!d) return alert('Nom + date requis'); myEvents.push({name:n,date:d}); localStorage.setItem('scol_events',JSON.stringify(myEvents)); buildFeteDropdown(); renderMy(); document.getElementById('evName').value='';}
-function delEvent(i){myEvents.splice(i,1); localStorage.setItem('scol_events',JSON.stringify(myEvents)); buildFeteDropdown(); renderMy();}
-function changeSystem(v){cfg.sys=v; document.getElementById('customDates').style.display=v==='custom'?'block':'none'; localStorage.setItem('scol_cfg',JSON.stringify(cfg)); buildFeteDropdown(); update();}
-function saveCustom(){cfg.cStart=document.getElementById('cStart').value; cfg.cEnd=document.getElementById('cEnd').value; if(!cfg.cStart||!cfg.cEnd) return alert('Dates requises'); localStorage.setItem('scol_cfg',JSON.stringify(cfg)); buildFeteDropdown(); update();}
-
-document.getElementById('system').value=cfg.sys;
-if(cfg.sys==='custom') document.getElementById('customDates').style.display='block';
-buildFeteDropdown(); update(); setInterval(update,30000);
+"use strict";
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const SYSTEMS={fwb:{s:"2026-08-24",e:"2027-07-02",r:"FWB"},flandre:{s:"2026-09-01",e:"2027-06-30",r:"Flandre"},france:{s:"2026-09-01",e:"2027-07-04",r:"France"},quebec:{s:"2026-08-27",e:"2027-06-23",r:"Québec"},suisse:{s:"2026-08-17",e:"2027-07-02",r:"Suisse"}};
+const FETES={fwb:[["Rentrée FWB","2026-08-24"],["Fête FWB","2026-09-27"],["Toussaint","2026-11-01"],["Armistice","2026-11-11"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Pâques","2027-04-05"],["1er Mai","2027-05-01"],["Fin d'année","2027-07-02"]],flandre:[["Rentrée","2026-09-01"],["Kerstmis","2026-12-25"],["Nieuwjaar","2027-01-01"],["Einde","2027-06-30"]],france:[["Rentrée","2026-09-01"],["Toussaint","2026-11-01"],["Noël","2026-12-25"],["Jour An","2027-01-01"],["Pâques","2027-04-05"],["8 Mai","2027-05-08"],["14 Juillet","2027-07-14"]],quebec:[["Rentrée","2026-08-27"],["Action de grâce","2026-10-12"],["Noël","2026-12-25"],["Relâche","2027-03-01"],["St-Jean","2027-06-24"]],suisse:[["Rentrée","2026-08-17"],["Jeûne fédéral","2026-09-21"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["1er Août","2027-08-01"]],custom:[["Rentrée","2026-09-01"],["Noël","2026-12-25"]]};
+const VAC={fwb:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"],["Détente","2027-02-15","2027-02-21"],["Printemps","2027-04-03","2027-04-18"]],france:[["Toussaint","2026-10-17","2026-11-02"],["Noël","2026-12-19","2027-01-04"]],quebec:[["Fêtes","2026-12-21","2027-01-04"],["Relâche","2027-03-01","2027-03-07"]],flandre:[],suisse:[],custom:[]};
+let cfg=store.get('scol_cfg',{sys:'fwb'});
+let myEv=store.get('scol_events',[]);
+const DAY=864e5;
+const pDate=s=>new Date(s+"T00:00:00");
+function dates(){if(cfg.sys==='custom')return{s:pDate(cfg.cStart||"2026-09-01"),e:pDate(cfg.cEnd||"2027-06-30")};const c=SYSTEMS[cfg.sys];return{s:pDate(c.s),e:pDate(c.e)}}
+function refreshSelect(){const sel=$('feteSelect');sel.textContent='';const o0=document.createElement('option');o0.value='';o0.textContent='-- Sélectionne --';sel.appendChild(o0);(FETES[cfg.sys]||[]).forEach((f,i)=>{const o=document.createElement('option');o.value=i;o.textContent=f[0];sel.appendChild(o)});myEv.forEach((e,i)=>{const o=document.createElement('option');o.value='my'+i;o.textContent='⭐ '+e.name;sel.appendChild(o)});$('regionName').textContent=SYSTEMS[cfg.sys]?.r||'Perso';$('feteDetail').classList.remove('show')}
+function nextFete(){const now=new Date();const all=[...(FETES[cfg.sys]||[]).map(f=>({name:f[0],date:f[1]})),...myEv].map(f=>({...f,d:pDate(f.date)})).filter(f=>f.d>=now).sort((a,b)=>a.d-b.d);const el=$('nextFete');el.textContent='';if(!all.length){el.textContent='Aucune fête à venir';return}const n=all[0];const diff=Math.ceil((n.d-now)/DAY);const b=document.createElement('b');b.textContent=n.name;el.append('⏳ Prochaine : ',b,` dans ${diff} j (${n.d.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})})`)}
+function update(){const{s,e}=dates();const now=new Date();const total=Math.round((e-s)/DAY)+1;const done=Math.min(Math.max(Math.floor((now-s)/DAY)+1,0),total);const pct=Math.min(Math.max((now-s)/(e-s),0),1)*100;$('date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});$('pct').textContent=pct.toFixed(1).replace('.',',')+' %';$('barYear').style.width=pct+'%';$('dayNum').textContent=done;$('dayTxt').textContent=`/ ${total} jours`;$('remain').textContent=total-done;const vacs=VAC[cfg.sys]||[];const vb=$('vac');let inVac=false;for(const[n,ds,de]of vacs){if(now>=pDate(ds)&&now<=pDate(de)){const r=Math.ceil((pDate(de)-now)/DAY);vb.textContent=`🏖️ Vacances (${n}) – reprise dans ${r} j`;vb.classList.add('show');inVac=true;break}}if(!inVac)vb.classList.remove('show');const left=Math.max(0,total-done);const leftSchool=Math.round(left*5/7);$('stats').textContent=`${leftSchool} jours d'école restants (hors week-end) · Semaine ${Math.max(1,Math.ceil(done/7))}`;const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();$('monthLine').textContent=`${now.toLocaleDateString('fr-FR',{month:'long'})} : jour ${now.getDate()}/${dim}`;$('barMonth').style.width=(now.getDate()/dim*100)+'%';$('footer').textContent=(SYSTEMS[cfg.sys]?SYSTEMS[cfg.sys].r+' · ':'')+total+' jours au total';renderMy();nextFete()}
+function renderMy(){const div=$('myList');div.textContent='';$('myCount').textContent=myEv.length;myEv.forEach((ev,i)=>{const row=document.createElement('div');row.className='ev';const sp=document.createElement('span');sp.textContent=`${ev.name} – ${pDate(ev.date).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}`;const b=document.createElement('button');b.className='ghost';b.textContent='×';b.onclick=()=>{myEv.splice(i,1);store.set('scol_events',myEv);refreshSelect();renderMy()};row.append(sp,b);div.appendChild(row)});store.set('scol_events',myEv)}
+$('feteSelect').addEventListener('change',e=>{const v=e.target.value;const box=$('feteDetail');if(v===''){box.classList.remove('show');return}const f=String(v).startsWith('my')?myEv[+String(v).slice(2)]:{name:FETES[cfg.sys][+v][0],date:FETES[cfg.sys][+v][1]};if(!f)return;const d=pDate(f.date);const diff=Math.ceil((d-new Date())/DAY);$('fdName').textContent='🎉 '+f.name;$('fdDate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});$('fdCount').textContent=diff>0?`dans ${diff} jours`:diff===0?"Aujourd'hui!":"passé";const{s,e:en}=dates();$('fdBar').style.width=(Math.min(Math.max((d-s)/(en-s),0),1)*100)+'%');box.classList.add('show')});
+$('system').value=cfg.sys;$('system').addEventListener('change',e=>{cfg.sys=e.target.value;store.set('scol_cfg',cfg);$('customDates').style.display=cfg.sys==='custom'?'block':'none';refreshSelect();update()});
+$('saveCustom').onclick=()=>{cfg.cStart=$('cStart').value;cfg.cEnd=$('cEnd').value;if(!cfg.cStart||!cfg.cEnd)return;store.set('scol_cfg',cfg);refreshSelect();update()};
+$('addEv').onclick=()=>{const n=$('evName').value.trim().slice(0,40);const d=$('evDate').value;if(!n||!d)return;myEv.push({name:n,date:d});store.set('scol_events',myEv);$('evName').value='';refreshSelect();renderMy()};
+$('themeBtn').onclick=()=>{document.body.classList.toggle('dark');try{localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light')}catch{}};
+try{if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark')}catch{}
+$('shareBtn').onclick=()=>{const t=`J'en suis à ${$('pct').textContent} de mon année scolaire 📚 https://fozyllll.github.io/Dates/`;window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')};
+$('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText($('pct').textContent)}catch{}};
+$('notifBtn').onclick=async()=>{if(!('Notification' in window))return;const p=await Notification.requestPermission();if(p==='granted')store.set('notif',1)};
+if(cfg.sys==='custom')$('customDates').style.display='block';
+refreshSelect();update();setInterval(update,60000);
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
 </html>
