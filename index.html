@@ -6,59 +6,119 @@
 <title>Année scolaire</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#f6f7f9;color:#161d2b;display:flex;justify-content:center;padding:20px 14px;min-height:100vh}
+:root{--bg:#f6f7f9;--card:#fff;--txt:#161d2b;--mut:#7b8499;--acc:#5b5bd6;--line:#eef0f4}
+body.dark{--bg:#0f1220;--card:#181d33;--txt:#eef1f6;--mut:#9aa3b8;--line:#242b4a}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);display:flex;justify-content:center;padding:20px 14px;min-height:100vh}
 .wrap{width:100%;max-width:520px;display:flex;flex-direction:column;gap:12px}
-.card{background:#fff;border:1px solid #eef0f4;border-radius:20px;padding:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
 .top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:18px}
+.icon-btn{background:var(--line);border:0;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--txt)}
 .hero{text-align:center}
-.hero .d{color:#7b8499;font-size:15px;text-transform:capitalize}
-.hero .p{font-size:64px;font-weight:800;color:#5b5bd6;margin:6px 0;line-height:1}
-.bar{height:12px;background:#eef0f4;border-radius:99px;overflow:hidden;margin-top:12px}
-.bar>i{display:block;height:100%;background:#5b5bd6;border-radius:99px}
+.hero.d{color:var(--mut);font-size:15px;text-transform:capitalize}
+.hero.p{font-size:64px;font-weight:800;color:var(--acc);margin:6px 0;line-height:1}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
+.bar>i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width.3s}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{background:#fff;border:1px solid #eef0f4;border-radius:16px;padding:16px;text-align:center}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
 .tile b{font-size:28px;display:block}
-.tile span{font-size:13px;color:#7b8499}
-select,input{width:100%;padding:11px;border:1px solid #eef0f4;border-radius:12px;font-size:15px;margin-top:6px}
-button{background:#5b5bd6;color:#fff;border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;margin-top:8px}
-.small{font-size:13px;color:#7b8499;margin-top:8px}
+.tile span{font-size:13px;color:var(--mut)}
+.banner{display:none;border-radius:16px;padding:14px;text-align:center;font-weight:600;background:#fff4e5;color:#e67700;border:1px solid #ffe8cc}
+.banner.show{display:block}
+.next{text-align:center;font-size:14px;color:var(--mut)}
+.next b{color:var(--txt)}
+select,input{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--txt);font-size:15px;margin-top:6px}
+button.primary{background:var(--acc);color:#fff;border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;margin-top:8px}
+button.ghost{background:var(--line);color:var(--txt);border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;margin-top:8px}
+.rowbtns{display:flex;gap:8px;margin-top:12px}
+.rowbtns button{flex:1;margin-top:0}
+.small{font-size:13px;color:var(--mut);margin-top:8px}
+.detail{margin-top:12px;padding:14px;border-radius:14px;background:var(--bg);border:1px solid var(--line);display:none}
+.detail.show{display:block}
+.ev{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+summary{cursor:pointer;color:var(--acc);font-weight:600;font-size:14px}
+h3{font-size:16px;margin-bottom:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="top"><span>📚 Année scolaire</span></div>
-<div class="card hero"><div class="d" id="date">...</div><div class="p" id="pct">...</div><div class="small">de l'année écoulée</div><div class="bar"><i id="barYear" style="width:0%"></i></div></div>
+<div class="top"><span>📚 Année scolaire</span><button class="icon-btn" id="themeBtn">🌙</button></div>
+<div id="vac" class="banner"></div>
+<div class="next card" id="nextFete">...</div>
+<div class="card hero"><div class="d" id="date">...</div><div class="p" id="pct">...</div><div class="small">de l'année écoulée</div><div class="bar"><i id="barYear"></i></div><div class="rowbtns"><button class="primary" id="shareBtn">Partager</button><button class="ghost" id="copyBtn">Copier</button><button class="ghost" id="notifBtn">🔔</button></div></div>
 <div class="grid"><div class="tile"><b id="dayNum">--</b><span id="dayTxt"></span></div><div class="tile"><b id="remain" style="color:#0ca678">--</b><span>restants</span></div></div>
-<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div></div>
-<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="france">France – 1 sept 2026 → 4 juil 2027</option></select></div>
-<div class="small" style="text-align:center" id="debug"></div>
+<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div><div class="small" id="monthLine"></div><div class="bar"><i id="barMonth" style="opacity:.6"></i></div></div>
+<div class="card"><h3>🎉 Fêtes · <span id="regionName"></span></h3><select id="feteSelect"></select><div id="feteDetail" class="detail"><div id="fdName" style="font-weight:800"></div><div class="small" id="fdDate"></div><div id="fdCount" style="font-size:24px;font-weight:800;color:var(--acc);margin:8px 0"></div><div class="bar"><i id="fdBar"></i></div></div><details style="margin-top:12px"><summary>Mes événements (<span id="myCount">0</span>)</summary><div id="myList"></div><div style="display:flex;gap:8px"><input id="evName" placeholder="Nom" maxlength="40"><input id="evDate" type="date"></div><button class="primary" id="addEv">Ajouter</button></details></div>
+<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027 (313 j)</option><option value="france">France – 1 sept 2026 → 3 juil 2027 (306 j)</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 3 juil 2027</option></select></div>
+<div class="small" style="text-align:center" id="footer"></div>
 </div>
 <script>
-try {
-  var start = new Date(2026,7,24);
-  var end = new Date(2027,6,2);
-  var now = new Date();
-  var total = Math.round((end-start)/86400000)+1;
-  var done = Math.floor((now-start)/86400000)+1;
-  if(done<0) done=0; if(done>total) done=total;
-  var pct = (now-start)/(end-start)*100;
-  if(pct<0) pct=0; if(pct>100) pct=100;
-  document.getElementById('date').textContent = now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('pct').textContent = pct.toFixed(1).replace('.',',')+' %';
-  document.getElementById('barYear').style.width = pct+'%';
-  document.getElementById('dayNum').textContent = done;
-  document.getElementById('dayTxt').textContent = '/ '+total+' jours';
-  document.getElementById('remain').textContent = total-done;
-  document.getElementById('stats').textContent = 'Semaine '+Math.ceil(done/7)+' · '+Math.round((total-done)*5/7)+' jours d\'école restants';
-  document.getElementById('system').addEventListener('change', function(e){
-    if(e.target.value==='france'){ start=new Date(2026,8,1); end=new Date(2027,6,4); }
-    else { start=new Date(2026,7,24); end=new Date(2027,6,2); }
-    location.reload();
-  });
-} catch(err) {
-  document.getElementById('debug').textContent = 'Erreur: '+err.message;
-  localStorage.clear();
+const $=id=>document.getElementById(id);
+const SYSTEMS={
+ fwb:{s:new Date(2026,7,24),e:new Date(2027,6,2),r:"FWB"},
+ france:{s:new Date(2026,8,1),e:new Date(2027,6,3),r:"France"},
+ flandre:{s:new Date(2026,8,1),e:new Date(2027,5,30),r:"Flandre"},
+ quebec:{s:new Date(2026,7,27),e:new Date(2027,5,23),r:"Québec"},
+ suisse:{s:new Date(2026,7,17),e:new Date(2027,6,3),r:"Suisse"}
+};
+const FETES={
+ fwb:[["Rentrée","2026-08-24"],["Toussaint","2026-11-01"],["Noël","2026-12-25"],["Pâques","2027-04-05"],["Fin","2027-07-02"]],
+ france:[["Rentrée","2026-09-01"],["Toussaint","2026-11-01"],["Noël","2026-12-25"],["Pâques","2027-04-05"],["14 Juillet","2027-07-14"]],
+ flandre:[["Rentrée","2026-09-01"],["Noël","2026-12-25"]],
+ quebec:[["Rentrée","2026-08-27"],["Noël","2026-12-25"]],
+ suisse:[["Rentrée","2026-08-17"],["Noël","2026-12-25"]]
+};
+const VAC={
+ fwb:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"]],
+ france:[["Toussaint","2026-10-17","2026-11-02"],["Noël","2026-12-19","2027-01-04"]],
+ flandre:[],quebec:[],suisse:[]
+};
+let cur='fwb';
+try{cur=localStorage.getItem('sys')||'fwb'}catch(e){}
+let myEv=[]; try{myEv=JSON.parse(localStorage.getItem('ev')||'[]')}catch(e){myEv=[]}
+const DAY=864e5;
+function pD(s){return new Date(s+"T00:00:00")}
+function update(){
+ const S=SYSTEMS[cur]; const now=new Date();
+ const total=Math.round((S.e-S.s)/DAY)+1;
+ let done=Math.floor((now-S.s)/DAY)+1; done=Math.max(0,Math.min(total,done));
+ let pct=(now-S.s)/(S.e-S.s)*100; pct=Math.max(0,Math.min(100,pct));
+ $('date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+ $('pct').textContent=pct.toFixed(1).replace('.',',')+' %';
+ $('barYear').style.width=pct+'%';
+ $('dayNum').textContent=done; $('dayTxt').textContent='/ '+total+' jours';
+ $('remain').textContent=total-done;
+ // vacances
+ let inV=false; const vb=$('vac');
+ for(const[n,ds,de]of (VAC[cur]||[])){ if(now>=pD(ds)&&now<=pD(de)){ const r=Math.ceil((pD(de)-now)/DAY); vb.textContent='🏖️ Vacances ('+n+') – reprise dans '+r+' j'; vb.classList.add('show'); inV=true; break; } }
+ if(!inV) vb.classList.remove('show');
+ // stats
+ const left=total-done;
+ $('stats').textContent=Math.round(left*5/7)+' jours d\'école restants · Semaine '+Math.max(1,Math.ceil(done/7));
+ const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+ $('monthLine').textContent=now.toLocaleDateString('fr-FR',{month:'long'})+' : '+now.getDate()+'/'+dim;
+ $('barMonth').style.width=(now.getDate()/dim*100)+'%';
+ $('footer').textContent=S.r+' · '+total+' jours au total';
+ $('regionName').textContent=S.r;
+ // prochaine fête
+ const all=[...(FETES[cur]||[]).map(f=>({name:f[0],date:f[1]})),...myEv].map(f=>({...f,d:pD(f.date)})).filter(f=>f.d>=now).sort((a,b)=>a.d-b.d);
+ if(all.length){ const n=all[0]; const diff=Math.ceil((n.d-now)/DAY); $('nextFete').innerHTML='⏳ Prochaine : <b>'+n.name+'</b> dans '+diff+' j'; }
+ // select fêtes
+ const sel=$('feteSelect'); sel.innerHTML='<option value="">-- Sélectionne --</option>';
+ (FETES[cur]||[]).forEach((f,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=f[0]; sel.appendChild(o); });
+ myEv.forEach((e,i)=>{ const o=document.createElement('option'); o.value='my'+i; o.textContent='⭐ '+e.name; sel.appendChild(o); });
+ renderMy();
 }
+function renderMy(){ const div=$('myList'); div.innerHTML=''; $('myCount').textContent=myEv.length; myEv.forEach((ev,i)=>{ const row=document.createElement('div'); row.className='ev'; row.innerHTML='<span>'+ev.name+'</span>'; const b=document.createElement('button'); b.className='ghost'; b.textContent='×'; b.onclick=()=>{myEv.splice(i,1); try{localStorage.setItem('ev',JSON.stringify(myEv))}catch(e){}; update()}; row.appendChild(b); div.appendChild(row); }); }
+$('system').value=cur;
+$('system').onchange=e=>{ cur=e.target.value; try{localStorage.setItem('sys',cur)}catch(e){}; update(); };
+$('feteSelect').onchange=e=>{ const v=e.target.value; const box=$('feteDetail'); if(v===''){box.classList.remove('show');return} const f=String(v).startsWith('my')?myEv[+String(v).slice(2)]:{name:FETES[cur][+v][0],date:FETES[cur][+v][1]}; const d=pD(f.date); const diff=Math.ceil((d-new Date())/DAY); $('fdName').textContent='🎉 '+f.name; $('fdDate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}); $('fdCount').textContent=diff>0?'dans '+diff+' jours':diff===0?"Aujourd'hui!":"passé"; const S=SYSTEMS[cur]; $('fdBar').style.width=(Math.min(Math.max((d-S.s)/(S.e-S.s),0),1)*100)+'%'; box.classList.add('show'); };
+$('addEv').onclick=()=>{ const n=$('evName').value.trim(); const d=$('evDate').value; if(!n||!d)return; myEv.push({name:n,date:d}); try{localStorage.setItem('ev',JSON.stringify(myEv))}catch(e){}; $('evName').value=''; update(); };
+$('themeBtn').onclick=()=>{ document.body.classList.toggle('dark'); try{localStorage.setItem('th',document.body.classList.contains('dark')?'1':'0')}catch(e){} };
+try{ if(localStorage.getItem('th')==='1') document.body.classList.add('dark') }catch(e){}
+$('shareBtn').onclick=()=>{ const t="J'en suis à "+$('pct').textContent+" de mon année scolaire 📚 https://fozyllll.github.io/Dates/"; window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank') };
+$('copyBtn').onclick=()=>{ try{navigator.clipboard.writeText($('pct').textContent)}catch(e){} };
+$('notifBtn').onclick=async()=>{ if(!('Notification' in window))return; await Notification.requestPermission(); };
+update(); setInterval(update,60000);
 </script>
 </body>
 </html>
