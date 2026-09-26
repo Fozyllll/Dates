@@ -1,0 +1,23 @@
+{
+  "name": "Dates - Année Scolaire",
+  "short_name": "Dates",
+  "description": "Suis ta progression dans l'année scolaire",
+  "start_url": "/Dates/",
+  "scope": "/Dates/",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#5b5bd6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
