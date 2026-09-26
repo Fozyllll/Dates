@@ -4,86 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Année scolaire</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#5b5bd6">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f6f7f9;--card:#fff;--txt:#161d2b;--mut:#7b8499;--acc:#5b5bd6;--line:#eef0f4}
-body.dark{--bg:#0f1220;--card:#181d33;--txt:#eef1f6;--mut:#9aa3b8;--line:#242b4a}
-body{font-family:system-ui,-apple-system,Inter,sans-serif;background:var(--bg);color:var(--txt);display:flex;justify-content:center;padding:20px 14px;min-height:100vh}
+body{font-family:system-ui,sans-serif;background:#f6f7f9;color:#161d2b;display:flex;justify-content:center;padding:20px 14px;min-height:100vh}
 .wrap{width:100%;max-width:520px;display:flex;flex-direction:column;gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
-.top{display:flex;justify-content:space-between;align-items:center;font-weight:700}
-.icon-btn{background:var(--line);border:0;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--txt)}
+.card{background:#fff;border:1px solid #eef0f4;border-radius:20px;padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:18px}
 .hero{text-align:center}
-.hero.d{color:var(--mut);text-transform:capitalize;font-size:15px}
-.hero.p{font-size:64px;font-weight:800;color:var(--acc);margin:6px 0;line-height:1}
-.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
-.bar>i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width.3s}
+.hero .d{color:#7b8499;font-size:15px;text-transform:capitalize}
+.hero .p{font-size:64px;font-weight:800;color:#5b5bd6;margin:6px 0;line-height:1}
+.bar{height:12px;background:#eef0f4;border-radius:99px;overflow:hidden;margin-top:12px}
+.bar>i{display:block;height:100%;background:#5b5bd6;border-radius:99px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
-.tile b{font-size:28px;display:block}.tile span{font-size:13px;color:var(--mut)}
-.banner{display:none;border-radius:16px;padding:14px;text-align:center;font-weight:600;background:#fff4e5;color:#e67700;border:1px solid #ffe8cc}
-.banner.show{display:block}
-.next{text-align:center;font-size:14px;color:var(--mut)}
-.next b{color:var(--txt)}
-select,input{width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--txt);font-size:15px}
-button.primary{background:var(--acc);color:#fff;border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px}
-button.ghost{background:var(--line);color:var(--txt);border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px}
-.rowbtns{display:flex;gap:8px;margin-top:12px}
-.rowbtns button{flex:1;margin:0}
-.small{font-size:13px;color:var(--mut);margin-top:8px}
-.detail{margin-top:12px;padding:14px;border-radius:14px;background:var(--bg);border:1px solid var(--line);display:none}
-.detail.show{display:block}
-.ev{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
-summary{cursor:pointer;color:var(--acc);font-weight:600;font-size:14px}
-h3{font-size:16px;margin-bottom:8px}
-label{font-size:13px;color:var(--mut);margin:10px 0 4px;display:block}
+.tile{background:#fff;border:1px solid #eef0f4;border-radius:16px;padding:16px;text-align:center}
+.tile b{font-size:28px;display:block}
+.tile span{font-size:13px;color:#7b8499}
+select,input{width:100%;padding:11px;border:1px solid #eef0f4;border-radius:12px;font-size:15px;margin-top:6px}
+button{background:#5b5bd6;color:#fff;border:0;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:14px;margin-top:8px}
+.small{font-size:13px;color:#7b8499;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="top"><span>📚 Année scolaire</span><button class="icon-btn" id="themeBtn" aria-label="Thème">🌙</button></div>
-<div id="vac" class="banner"></div>
-<div class="next card" id="nextFete"></div>
-<div class="card hero"><div class="d" id="date"></div><div class="p" id="pct">--</div><div class="small">de l'année écoulée</div><div class="bar"><i id="barYear"></i></div><div class="rowbtns"><button class="primary" id="shareBtn">Partager</button><button class="ghost" id="copyBtn">Copier</button><button class="ghost" id="notifBtn">🔔</button></div></div>
+<div class="top"><span>📚 Année scolaire</span></div>
+<div class="card hero"><div class="d" id="date">...</div><div class="p" id="pct">...</div><div class="small">de l'année écoulée</div><div class="bar"><i id="barYear" style="width:0%"></i></div></div>
 <div class="grid"><div class="tile"><b id="dayNum">--</b><span id="dayTxt"></span></div><div class="tile"><b id="remain" style="color:#0ca678">--</b><span>restants</span></div></div>
-<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div><div class="small" id="monthLine" style="margin-top:6px"></div><div class="bar"><i id="barMonth" style="opacity:.6"></i></div></div>
-<div class="card"><h3>🎉 Fêtes · <span id="regionName"></span></h3><label>Choisir</label><select id="feteSelect"></select><div id="feteDetail" class="detail"><div id="fdName" style="font-weight:800"></div><div class="small" id="fdDate"></div><div id="fdCount" style="font-size:24px;font-weight:800;color:var(--acc);margin:8px 0"></div><div class="bar"><i id="fdBar"></i></div></div><details style="margin-top:12px"><summary>Mes événements (<span id="myCount">0</span>)</summary><div id="myList"></div><div style="display:flex;gap:8px;margin-top:8px"><input id="evName" placeholder="Nom" maxlength="40"><input id="evDate" type="date"></div><button class="primary" id="addEv" style="margin-top:8px">Ajouter</button></details></div>
-<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="france">France – 1 sept 2026 → 4 juil 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 2 juil 2027</option><option value="custom">Personnalisé…</option></select><div id="customDates" style="display:none"><div style="display:flex;gap:8px"><div style="flex:1"><label>Début</label><input type="date" id="cStart"></div><div style="flex:1"><label>Fin</label><input type="date" id="cEnd"></div></div><button class="primary" id="saveCustom">Enregistrer</button></div></div>
-<div class="small" style="text-align:center" id="footer"></div>
+<div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div></div>
+<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="france">France – 1 sept 2026 → 4 juil 2027</option></select></div>
+<div class="small" style="text-align:center" id="debug"></div>
 </div>
 <script>
-"use strict";
-const $=id=>document.getElementById(id);
-const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-const SYSTEMS={fwb:{s:"2026-08-24",e:"2027-07-02",r:"FWB"},flandre:{s:"2026-09-01",e:"2027-06-30",r:"Flandre"},france:{s:"2026-09-01",e:"2027-07-04",r:"France"},quebec:{s:"2026-08-27",e:"2027-06-23",r:"Québec"},suisse:{s:"2026-08-17",e:"2027-07-02",r:"Suisse"}};
-const FETES={fwb:[["Rentrée FWB","2026-08-24"],["Fête FWB","2026-09-27"],["Toussaint","2026-11-01"],["Armistice","2026-11-11"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Pâques","2027-04-05"],["1er Mai","2027-05-01"],["Fin d'année","2027-07-02"]],flandre:[["Rentrée","2026-09-01"],["Kerstmis","2026-12-25"],["Nieuwjaar","2027-01-01"],["Einde","2027-06-30"]],france:[["Rentrée","2026-09-01"],["Toussaint","2026-11-01"],["Noël","2026-12-25"],["Jour An","2027-01-01"],["Pâques","2027-04-05"],["8 Mai","2027-05-08"],["14 Juillet","2027-07-14"]],quebec:[["Rentrée","2026-08-27"],["Action de grâce","2026-10-12"],["Noël","2026-12-25"],["Relâche","2027-03-01"],["St-Jean","2027-06-24"]],suisse:[["Rentrée","2026-08-17"],["Jeûne fédéral","2026-09-21"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["1er Août","2027-08-01"]],custom:[["Rentrée","2026-09-01"],["Noël","2026-12-25"]]};
-const VAC={fwb:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"],["Détente","2027-02-15","2027-02-21"],["Printemps","2027-04-03","2027-04-18"]],france:[["Toussaint","2026-10-17","2026-11-02"],["Noël","2026-12-19","2027-01-04"]],quebec:[["Fêtes","2026-12-21","2027-01-04"],["Relâche","2027-03-01","2027-03-07"]],flandre:[],suisse:[],custom:[]};
-let cfg=store.get('scol_cfg',{sys:'fwb'});
-let myEv=store.get('scol_events',[]);
-const DAY=864e5;
-const pDate=s=>new Date(s+"T00:00:00");
-function dates(){if(cfg.sys==='custom')return{s:pDate(cfg.cStart||"2026-09-01"),e:pDate(cfg.cEnd||"2027-06-30")};const c=SYSTEMS[cfg.sys];return{s:pDate(c.s),e:pDate(c.e)}}
-function refreshSelect(){const sel=$('feteSelect');sel.textContent='';const o0=document.createElement('option');o0.value='';o0.textContent='-- Sélectionne --';sel.appendChild(o0);(FETES[cfg.sys]||[]).forEach((f,i)=>{const o=document.createElement('option');o.value=i;o.textContent=f[0];sel.appendChild(o)});myEv.forEach((e,i)=>{const o=document.createElement('option');o.value='my'+i;o.textContent='⭐ '+e.name;sel.appendChild(o)});$('regionName').textContent=SYSTEMS[cfg.sys]?.r||'Perso';$('feteDetail').classList.remove('show')}
-function nextFete(){const now=new Date();const all=[...(FETES[cfg.sys]||[]).map(f=>({name:f[0],date:f[1]})),...myEv].map(f=>({...f,d:pDate(f.date)})).filter(f=>f.d>=now).sort((a,b)=>a.d-b.d);const el=$('nextFete');el.textContent='';if(!all.length){el.textContent='Aucune fête à venir';return}const n=all[0];const diff=Math.ceil((n.d-now)/DAY);const b=document.createElement('b');b.textContent=n.name;el.append('⏳ Prochaine : ',b,` dans ${diff} j (${n.d.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})})`)}
-function update(){const{s,e}=dates();const now=new Date();const total=Math.round((e-s)/DAY)+1;const done=Math.min(Math.max(Math.floor((now-s)/DAY)+1,0),total);const pct=Math.min(Math.max((now-s)/(e-s),0),1)*100;$('date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});$('pct').textContent=pct.toFixed(1).replace('.',',')+' %';$('barYear').style.width=pct+'%';$('dayNum').textContent=done;$('dayTxt').textContent=`/ ${total} jours`;$('remain').textContent=total-done;const vacs=VAC[cfg.sys]||[];const vb=$('vac');let inVac=false;for(const[n,ds,de]of vacs){if(now>=pDate(ds)&&now<=pDate(de)){const r=Math.ceil((pDate(de)-now)/DAY);vb.textContent=`🏖️ Vacances (${n}) – reprise dans ${r} j`;vb.classList.add('show');inVac=true;break}}if(!inVac)vb.classList.remove('show');const left=Math.max(0,total-done);const leftSchool=Math.round(left*5/7);$('stats').textContent=`${leftSchool} jours d'école restants (hors week-end) · Semaine ${Math.max(1,Math.ceil(done/7))}`;const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();$('monthLine').textContent=`${now.toLocaleDateString('fr-FR',{month:'long'})} : jour ${now.getDate()}/${dim}`;$('barMonth').style.width=(now.getDate()/dim*100)+'%';$('footer').textContent=(SYSTEMS[cfg.sys]?SYSTEMS[cfg.sys].r+' · ':'')+total+' jours au total';renderMy();nextFete()}
-function renderMy(){const div=$('myList');div.textContent='';$('myCount').textContent=myEv.length;myEv.forEach((ev,i)=>{const row=document.createElement('div');row.className='ev';const sp=document.createElement('span');sp.textContent=`${ev.name} – ${pDate(ev.date).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}`;const b=document.createElement('button');b.className='ghost';b.textContent='×';b.onclick=()=>{myEv.splice(i,1);store.set('scol_events',myEv);refreshSelect();renderMy()};row.append(sp,b);div.appendChild(row)});store.set('scol_events',myEv)}
-$('feteSelect').addEventListener('change',e=>{const v=e.target.value;const box=$('feteDetail');if(v===''){box.classList.remove('show');return}const f=String(v).startsWith('my')?myEv[+String(v).slice(2)]:{name:FETES[cfg.sys][+v][0],date:FETES[cfg.sys][+v][1]};if(!f)return;const d=pDate(f.date);const diff=Math.ceil((d-new Date())/DAY);$('fdName').textContent='🎉 '+f.name;$('fdDate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});$('fdCount').textContent=diff>0?`dans ${diff} jours`:diff===0?"Aujourd'hui!":"passé";const{s,e:en}=dates();$('fdBar').style.width=(Math.min(Math.max((d-s)/(en-s),0),1)*100)+'%');box.classList.add('show')});
-$('system').value=cfg.sys;$('system').addEventListener('change',e=>{cfg.sys=e.target.value;store.set('scol_cfg',cfg);$('customDates').style.display=cfg.sys==='custom'?'block':'none';refreshSelect();update()});
-$('saveCustom').onclick=()=>{cfg.cStart=$('cStart').value;cfg.cEnd=$('cEnd').value;if(!cfg.cStart||!cfg.cEnd)return;store.set('scol_cfg',cfg);refreshSelect();update()};
-$('addEv').onclick=()=>{const n=$('evName').value.trim().slice(0,40);const d=$('evDate').value;if(!n||!d)return;myEv.push({name:n,date:d});store.set('scol_events',myEv);$('evName').value='';refreshSelect();renderMy()};
-$('themeBtn').onclick=()=>{document.body.classList.toggle('dark');try{localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light')}catch{}};
-try{if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark')}catch{}
-$('shareBtn').onclick=()=>{const t=`J'en suis à ${$('pct').textContent} de mon année scolaire 📚 https://fozyllll.github.io/Dates/`;window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')};
-$('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText($('pct').textContent)}catch{}};
-$('notifBtn').onclick=async()=>{if(!('Notification' in window))return;const p=await Notification.requestPermission();if(p==='granted')store.set('notif',1)};
-if(cfg.sys==='custom')$('customDates').style.display='block';
-refreshSelect();update();setInterval(update,60000);
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+try {
+  var start = new Date(2026,7,24);
+  var end = new Date(2027,6,2);
+  var now = new Date();
+  var total = Math.round((end-start)/86400000)+1;
+  var done = Math.floor((now-start)/86400000)+1;
+  if(done<0) done=0; if(done>total) done=total;
+  var pct = (now-start)/(end-start)*100;
+  if(pct<0) pct=0; if(pct>100) pct=100;
+  document.getElementById('date').textContent = now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('pct').textContent = pct.toFixed(1).replace('.',',')+' %';
+  document.getElementById('barYear').style.width = pct+'%';
+  document.getElementById('dayNum').textContent = done;
+  document.getElementById('dayTxt').textContent = '/ '+total+' jours';
+  document.getElementById('remain').textContent = total-done;
+  document.getElementById('stats').textContent = 'Semaine '+Math.ceil(done/7)+' · '+Math.round((total-done)*5/7)+' jours d\'école restants';
+  document.getElementById('system').addEventListener('change', function(e){
+    if(e.target.value==='france'){ start=new Date(2026,8,1); end=new Date(2027,6,4); }
+    else { start=new Date(2026,7,24); end=new Date(2027,6,2); }
+    location.reload();
+  });
+} catch(err) {
+  document.getElementById('debug').textContent = 'Erreur: '+err.message;
+  localStorage.clear();
+}
 </script>
 </body>
 </html>
