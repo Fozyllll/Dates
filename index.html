@@ -51,12 +51,12 @@ h3{font-size:16px;margin-bottom:8px}
 <div class="grid"><div class="tile"><b id="dayNum">--</b><span id="dayTxt"></span></div><div class="tile"><b id="remain" style="color:#0ca678">--</b><span>restants</span></div></div>
 <div class="card"><h3>📊 En bref</h3><div class="small" id="stats"></div><div class="small" id="monthLine"></div><div class="bar"><i id="barMonth" style="opacity:.6"></i></div><div class="small" id="weekLine"></div><div class="bar"><i id="barWeek" style="opacity:.4"></i></div></div>
 <div class="card"><h3>🎉 Fêtes · <span id="regionName"></span></h3><select id="feteSelect"></select><div id="feteDetail" class="detail"><div id="fdName" style="font-weight:800"></div><div class="small" id="fdDate"></div><div id="fdCount" style="font-size:24px;font-weight:800;color:var(--acc);margin:8px 0"></div><div class="bar"><i id="fdBar"></i></div></div><details style="margin-top:12px"><summary>Mes événements (<span id="myCount">0</span>)</summary><div id="myList"></div><div style="display:flex;gap:8px"><input id="evName" placeholder="Nom" maxlength="40"><input id="evDate" type="date"></div><button class="primary" id="addEv">Ajouter</button></details></div>
-<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="france">France – 1 sept 2026 → 3 juil 2027</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 3 juil 2027</option></select><div class="small">Le changement est sauvegardé automatiquement.</div></div>
+<div class="card"><h3>⚙️ Région</h3><select id="system"><option value="fwb">FWB – 24 août 2026 → 2 juil 2027</option><option value="france">France – 1 sept 2026 → 3 juil 2027</option><option value="flandre">Flandre – 1 sept 2026 → 30 juin 2027</option><option value="quebec">Québec – 27 août 2026 → 23 juin 2027</option><option value="suisse">Suisse – 17 août 2026 → 3 juil 2027</option><option value="luxembourg">Luxembourg – 15 sept 2026 → 15 juil 2027</option></select><div class="small">Le changement est sauvegardé automatiquement.</div></div>
 <div class="small" style="text-align:center" id="footer"></div>
 <footer style="text-align:center;padding:20px 10px 30px;font-size:12px;color:var(--mut);line-height:1.8">
 <div>© 2026 Clément — Tous droits réservés</div>
 <div>Fait avec ❤️ en Belgique</div>
-<div style="opacity:.7">Année scolaire v1.2</div>
+<div style="opacity:.7">Année scolaire v1.3</div>
 </footer>
 </div>
 <script>
@@ -66,21 +66,24 @@ const SYSTEMS={
  france:{s:new Date(2026,8,1),e:new Date(2027,6,3),r:"France"},
  flandre:{s:new Date(2026,8,1),e:new Date(2027,5,30),r:"Flandre"},
  quebec:{s:new Date(2026,7,27),e:new Date(2027,5,23),r:"Québec"},
- suisse:{s:new Date(2026,7,17),e:new Date(2027,6,3),r:"Suisse"}
+ suisse:{s:new Date(2026,7,17),e:new Date(2027,6,3),r:"Suisse"},
+ luxembourg:{s:new Date(2026,8,15),e:new Date(2027,6,15),r:"Luxembourg"}
 };
 const FETES={
  fwb:[["Rentrée FWB","2026-08-24"],["Fête de la FWB","2026-09-27"],["Halloween","2026-10-31"],["Toussaint","2026-11-01"],["Armistice","2026-11-11"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Épiphanie","2027-01-06"],["Chandeleur","2027-02-02"],["Saint-Valentin","2027-02-14"],["Carnaval","2027-02-16"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Fête des Mères","2027-05-30"],["Fête des Pères","2027-06-13"],["Fin d'année","2027-07-02"]],
  france:[["Rentrée","2026-09-01"],["Toussaint","2026-11-01"],["Armistice","2026-11-11"],["Noël","2026-12-25"],["Jour de l'An","2027-01-01"],["Épiphanie","2027-01-06"],["Chandeleur","2027-02-02"],["Saint-Valentin","2027-02-14"],["Mardi Gras","2027-02-16"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["8 Mai","2027-05-08"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Lundi de Pentecôte","2027-05-24"],["Fête des Mères","2027-05-30"],["Fête de la Musique","2027-06-21"],["14 Juillet","2027-07-14"],["Assomption","2027-08-15"]],
  flandre:[["Rentrée","2026-09-01"],["Halloween","2026-10-31"],["Allerheiligen","2026-11-01"],["Wapenstilstand","2026-11-11"],["Sinterklaas","2026-12-06"],["Kerstmis","2026-12-25"],["Nieuwjaar","2027-01-01"],["Driekoningen","2027-01-06"],["Valentijn","2027-02-14"],["Pasen","2027-04-05"],["Paasmaandag","2027-04-06"],["1 Mei","2027-05-01"],["O.H. Hemelvaart","2027-05-13"],["Pinksteren","2027-05-23"],["Pinkstermaandag","2027-05-24"],["Vaderdag","2027-06-13"],["Vlaamse Feestdag","2027-07-11"],["Nationale Feestdag","2027-07-21"]],
  quebec:[["Rentrée","2026-08-27"],["Fête du Travail","2026-09-07"],["Action de grâce","2026-10-12"],["Halloween","2026-10-31"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Saint-Valentin","2027-02-14"],["Relâche","2027-03-01"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["Journée des patriotes","2027-05-24"],["Fête des Mères","2027-05-09"],["Fête des Pères","2027-06-20"],["Saint-Jean-Baptiste","2027-06-24"],["Fête du Canada","2027-07-01"]],
- suisse:[["Rentrée","2026-08-17"],["Jeûne fédéral","2026-09-21"],["Halloween","2026-10-31"],["Toussaint","2026-11-01"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Épiphanie","2027-01-06"],["Saint-Valentin","2027-02-14"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Lundi de Pentecôte","2027-05-24"],["Fête-Dieu","2027-06-03"],["Fête nationale","2027-08-01"]]
+ suisse:[["Rentrée","2026-08-17"],["Jeûne fédéral","2026-09-21"],["Halloween","2026-10-31"],["Toussaint","2026-11-01"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Nouvel An","2027-01-01"],["Épiphanie","2027-01-06"],["Saint-Valentin","2027-02-14"],["Pâques","2027-04-05"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["Ascension","2027-05-13"],["Pentecôte","2027-05-23"],["Lundi de Pentecôte","2027-05-24"],["Fête-Dieu","2027-06-03"],["Fête nationale","2027-08-01"]],
+ luxembourg:[["Rentrée scolaire","2026-09-15"],["Toussaint","2026-11-01"],["Saint-Nicolas","2026-12-06"],["Noël","2026-12-25"],["Saint-Étienne","2026-12-26"],["Nouvel An","2027-01-01"],["Saint-Valentin","2027-02-14"],["Carnaval","2027-02-08"],["Pâques","2027-03-28"],["Lundi de Pâques","2027-04-06"],["1er Mai","2027-05-01"],["Journée de l'Europe","2027-05-09"],["Ascension","2027-05-06"],["Lundi de Pentecôte","2027-05-17"],["Fête nationale","2027-06-23"],["Assomption","2027-08-15"],["Fin d'année scolaire","2027-07-15"]]
 };
 const VAC={
  fwb:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"],["Détente","2027-02-15","2027-02-21"],["Printemps","2027-04-03","2027-04-18"]],
  france:[["Toussaint","2026-10-17","2026-11-02"],["Noël","2026-12-19","2027-01-04"],["Hiver","2027-02-13","2027-03-01"],["Printemps","2027-04-10","2027-04-26"]],
  flandre:[["Automne","2026-10-26","2026-11-01"],["Hiver","2026-12-21","2027-01-04"],["Printemps","2027-04-05","2027-04-18"]],
  quebec:[["Fêtes","2026-12-21","2027-01-04"],["Relâche","2027-03-01","2027-03-07"]],
- suisse:[["Automne","2026-10-17","2026-11-01"],["Hiver","2026-12-24","2027-01-10"]]
+ suisse:[["Automne","2026-10-17","2026-11-01"],["Hiver","2026-12-24","2027-01-10"]],
+ luxembourg:[["Toussaint","2026-10-31","2026-11-08"],["Noël","2026-12-19","2027-01-03"],["Carnaval","2027-02-06","2027-02-14"],["Pâques","2027-03-27","2027-04-11"],["Pentecôte","2027-05-29","2027-06-06"]]
 };
 let cur='fwb'; try{cur=localStorage.getItem('sys')||'fwb'}catch(e){}
 let myEv=[]; try{myEv=JSON.parse(localStorage.getItem('ev')||'[]')}catch(e){myEv=[]}
@@ -99,7 +102,6 @@ function update(animate=true){
  let pct=(now-S.s)/(S.e-S.s)*100; pct=Math.max(0,Math.min(100,pct));
  $('date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
  if(animate){ animateCount($('pct'),pct); } else { $('pct').textContent=pct.toFixed(1).replace('.',',')+' %'; }
- // reset bars to 0 then animate to target
  $('barYear').style.width='0%'; $('barMonth').style.width='0%'; $('barWeek').style.width='0%';
  requestAnimationFrame(()=>{ setTimeout(()=>{
    $('barYear').style.width=pct+'%';
